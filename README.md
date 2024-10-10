@@ -1,3 +1,11 @@
+# venuegen port to Python 3
+
+This fork is a port of venuegen (created by kueller) to Python 3 done by Deevun155. The code has been tested using 64 bit REAPER 7 and Python 3.10. The original README is below, but there are some things that are no longer the case:
+- Obviously this port needs Python 3 instead of 2.
+- This script complements the [fork of CAT for Python 3](https://github.com/SuperRiderTH/CAT/tree/python3-main) by SuperRiderTH.
+- This version of venuegen **does** close after completing a function, as opposed to the original which does not.
+- The AUTOSTROBE and RANDOM functions haven't been tested (I never use them), so they may or may not work.
+
 # venuegen
 
 VENUEGEN is a tool to make venue authoring for Rock Band a little easier. Instead of manually placing events, you can enter notes on a piano roll and this script will map the notes to the proper text events for you. No more digging through a mess of text events in the VENUE track or misspelling names.
