@@ -31,7 +31,7 @@ class MIDIEvent:
         self.apos = apos
         self.status = status
         self.encText = encText
-        self.text = base64.b64decode(str(encText))[2:]
+        self.text = base64.b64decode(encText)[2:].decode("utf-8")
 
     def __repr__(self):
         s = "<X %d %x\n%s\n>" % (self.rpos, self.status, self.encText)
@@ -52,7 +52,7 @@ class MIDITrackData:
     def __repr__(self):
         tok = self.chunk.split('\n')
         text = '\n'.join(tok[0:self.midi_start]) + '\n'
-
+        #text += "notesbelow\n"
         for note in self.notes:
             text = text + str(note) + '\n'
 
@@ -79,12 +79,18 @@ def recalculate_positions(MIDIdata):
 
 # Adds the header and encodes MIDI event text to base64.
 def encode_text_event(text, header):
-    hx = header + text.encode("hex")
-    return base64.encodestring(hx.decode("hex")).strip()
+    from vgreaper import vg_log
+    #vg_log(text)
+    #vg_log(header)
+    hx = header + text.encode().hex()
+    #vg_log(hx)
+    #vg_log(base64.b64encode(bytes.fromhex(hx)).decode())
+    return base64.b64encode(bytes.fromhex(hx)).decode()
 
 # Inserts a text event at apos to a MIDI array.
 # etype: "text" for TEXT EVENT or "name" for TRACK NAME.
 def add_text_event(MIDIdata, apos, text, etype):
+    from vgreaper import vg_log
     if etype == "text":
         e = MIDIEvent(0, apos, 0, encode_text_event(text, "ff01"))
     elif etype == "name":
@@ -100,10 +106,14 @@ def add_text_event(MIDIdata, apos, text, etype):
 
 # Adds MIDI note at position apos.
 def add_note(MIDIdata, apos, status, pitch, velocity):
+    from vgreaper import vg_log
     if status not in (MIDI_ON, MIDI_OFF): return
     n = MIDINote(0, apos, status, pitch, velocity)
+    
 
     i = 0
+    #vg_log("MIDIDATA.NOTES!!!!!")
+    #vg_log(len(MIDIdata.notes))
     for i in range(len(MIDIdata.notes)):
         if MIDIdata.notes[i].apos > apos:
             break
@@ -111,6 +121,7 @@ def add_note(MIDIdata, apos, status, pitch, velocity):
     if i == 0: n.rpos = apos
     MIDIdata.notes.insert(i, n)
     recalculate_positions(MIDIdata)
+    #vg_log(MIDIdata)
 
 # These two functions remove *all* the notes/events in a track.
 def remove_notes(MIDIdata):

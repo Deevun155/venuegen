@@ -217,7 +217,7 @@ POSTPROCS = {
 STROBE_VALUES = (4, 8, 16, 32, 104, 108, 116)
 
 def reverse_dict(d):
-    return {v: k for k, v in d.iteritems()}
+    return {v: k for k, v in d.items()}
 
 def dict_merge(dicts):
     merged = {}
@@ -381,7 +381,8 @@ def generate_venue():
         return 1
 
     data = get_midi_data(cam_item)
-
+    #vg_log("data before")
+    #vg_log(data)
     remove_events(data)
     cam_range = dict_merge((DIRECTED, DIRECTED_FREEBIES, CAMERA))
     section_generate(data, DIRECTED, cam_range, False)
@@ -389,6 +390,8 @@ def generate_venue():
     section_generate(data, CAMERA, cam_range, False)
     apply_random_notes(data)
     write_midi_data(cam_item, data)
+    #vg_log("data after")
+    #vg_log(data)
 
     light_item = get_reaper_item("lighting")
 
@@ -429,9 +432,10 @@ def copy_camera_to_venue():
         vg_error("Could not find the \"VENUE\" track.")
         return
 
-    cam_events = CAMERA.values() + DIRECTED.values() + DIRECTED_FREEBIES.values()
-
+    cam_events = list(CAMERA.values()) + list(DIRECTED.values()) + list(DIRECTED_FREEBIES.values())
+    
     venue_data = get_midi_data(venue_item)
+    #vg_log(venue_data)
 
     existing_events = False
     for note in venue_data.notes:
@@ -465,7 +469,7 @@ def copy_lights_to_venue():
         vg_error("Could not find the \"VENUE\" track.")
         return
 
-    light_events = LIGHTING.values() + LIGHTS_SINGLE.values() + POSTPROCS.values()
+    light_events = list(LIGHTING.values()) + list(LIGHTS_SINGLE.values()) + list(POSTPROCS.values())
 
     venue_data = get_midi_data(venue_item)
 
@@ -490,3 +494,6 @@ def copy_lights_to_venue():
 
     write_midi_data(venue_item, venue_data)
 
+#generate_venue()
+#copy_camera_to_venue()
+#copy_lights_to_venue()
