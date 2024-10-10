@@ -15,6 +15,7 @@ SINGLE_LEN = 480 // (16 // 4) # 16th note
 def verify_overwrite(MIDIdata, name):
     r = YES
     existing_notes = False
+    #______This was omitted because it wasn't working correctly and I couldn't be bothered to figure it out.
     #for note in MIDIdata.notes:
         #if isinstance(note, MIDINote):
             #existing_notes = True
@@ -24,24 +25,18 @@ def verify_overwrite(MIDIdata, name):
         #r = vg_verify("Notes found in \"%s\" track. Delete and replace with pulled venue?" % name)
     return r
 
+# Grab notes from a map_range that only need the MIDI_ON (no fades)
+# Note: map_range is an inverted dictionary from vgprocess.
+# It should translate event names->note numbers.
 def pull_single_instance(data_src, data_dst, map_range):
-    #vg_log(map_range)
-    #vg_log(data_dst)
     for note in data_src.notes:
-        #vg_log(note)
-        #vg_log("Is it the instance of the thing?")
-        #vg_log(isinstance(note, MIDIEvent))
-        #vg_log("Is it the thing in the other thing?")
-        #vg_log(note.text in map_range)
-        #vg_log(note.text.decode("utf-8"))
         if isinstance(note, MIDIEvent) and note.text in map_range:
-            #vg_log(note.text.decode("utf-8"))
             pitch = map_range[note.text]
-            #vg_log(pitch)
             add_note(data_dst, note.apos, MIDI_ON, pitch, 64)
             add_note(data_dst, note.apos + SINGLE_LEN, MIDI_OFF, pitch, 0)
-    #vg_log(data_dst)
 
+# Map range should not contain overlapping notes
+# Do not mix post-procs and lighting, only one effect can be on at a time.
 def pull_faded_instance(data_src, data_dst, map_range):
     valid_notes = []
     for note in data_src.notes:
@@ -91,36 +86,25 @@ def pull_camera_from_venue():
 
     single_cam_range = reverse_dict(dict_merge((CAMERA, DIRECTED)))
     
-    #vg_log(single_cam_range)
     cam_data = get_midi_data(cam_item)
-    #vg_log(cam_data.midi_start)
-    #vg_log("CAM BEFORE")
-    #vg_log(cam_data)
     venue_data = get_midi_data(venue_item)
-    #vg_log(venue_data)
 
     if verify_overwrite(cam_data, "CAMERA") != YES:
         return
 
     remove_events(cam_data)
     remove_notes(cam_data)
-    #vg_log("CAM AFTER")
-    #vg_log(cam_data)
-    #vg_log("VENUE")
-    #vg_log(venue_data)
-    #vg_log(venue_data.midi_start)
 
     pull_single_instance(venue_data, cam_data, single_cam_range)
 
+    # Since all directed cuts work independent of each other
+    # in regards to fades it's best to process them all individually.
     for cut, note in reverse_dict(DIRECTED_FREEBIES).items():
         pull_faded_instance(venue_data, cam_data, { cut: note })
 
     write_midi_data(cam_item, cam_data)
-    #vg_log("THIS IS CAM DATA")
-    #vg_log(cam_data)
 
 def pull_lighting_from_venue():
-    #vg_log("it got called")
     light_item = get_reaper_item("lighting")
     if light_item is None:
         vg_error("Could not find the \"LIGHTING\" track.")
@@ -130,8 +114,6 @@ def pull_lighting_from_venue():
     if venue_item is None: 
         vg_error("Could not find the \"VENUE\" track.")
         return
-    #vg_log(light_item)
-    #vg_log(venue_item)
     single_light_range = reverse_dict(LIGHTS_SINGLE)
     faded_lights_range = reverse_dict(LIGHTING)
     faded_procs_range = reverse_dict(POSTPROCS)
@@ -139,7 +121,6 @@ def pull_lighting_from_venue():
 
     light_data = get_midi_data(light_item)
     venue_data = get_midi_data(venue_item)
-    #vg_log(venue_data)
     if verify_overwrite(light_data, "LIGHTING") != YES:
         return
 
@@ -151,7 +132,3 @@ def pull_lighting_from_venue():
     pull_faded_instance(venue_data, light_data, faded_procs_range)
 
     write_midi_data(light_item, light_data)
-    #vg_log(light_data)
-    
-#pull_lighting_from_venue()
-#pull_camera_from_venue()

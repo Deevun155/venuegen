@@ -381,8 +381,6 @@ def generate_venue():
         return 1
 
     data = get_midi_data(cam_item)
-    #vg_log("data before")
-    #vg_log(data)
     remove_events(data)
     cam_range = dict_merge((DIRECTED, DIRECTED_FREEBIES, CAMERA))
     section_generate(data, DIRECTED, cam_range, False)
@@ -390,8 +388,6 @@ def generate_venue():
     section_generate(data, CAMERA, cam_range, False)
     apply_random_notes(data)
     write_midi_data(cam_item, data)
-    #vg_log("data after")
-    #vg_log(data)
 
     light_item = get_reaper_item("lighting")
 
@@ -435,7 +431,6 @@ def copy_camera_to_venue():
     cam_events = list(CAMERA.values()) + list(DIRECTED.values()) + list(DIRECTED_FREEBIES.values())
     
     venue_data = get_midi_data(venue_item)
-    #vg_log(venue_data)
 
     existing_events = False
     for note in venue_data.notes:
@@ -493,7 +488,3 @@ def copy_lights_to_venue():
             add_text_event(venue_data, note.apos, note.text, "text")
 
     write_midi_data(venue_item, venue_data)
-
-#generate_venue()
-#copy_camera_to_venue()
-#copy_lights_to_venue()

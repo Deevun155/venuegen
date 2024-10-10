@@ -1,4 +1,3 @@
-# @CumKittie
 
 import sys
 from tkinter import Tk, Button, Label
