@@ -214,6 +214,11 @@ POSTPROCS = {
         71: "[ProFilm_a.pp]"
 }
 
+FOG = {
+        73: "[FogOff]",  
+        74: "[FogOn]"   
+}
+
 STROBE_VALUES = (4, 8, 16, 32, 104, 108, 116)
 
 def reverse_dict(d):
@@ -402,6 +407,7 @@ def generate_venue():
     section_generate(data, LIGHTS_SINGLE, light_range, False)
     section_generate(data, LIGHTING, light_range, True)
     section_generate(data, POSTPROCS, POSTPROCS, True)
+    section_generate(data, FOG, FOG, False)
     apply_strobe_notes(data)
     write_midi_data(light_item, data)
 
@@ -464,7 +470,7 @@ def copy_lights_to_venue():
         vg_error("Could not find the \"VENUE\" track.")
         return
 
-    light_events = list(LIGHTING.values()) + list(LIGHTS_SINGLE.values()) + list(POSTPROCS.values())
+    light_events = list(LIGHTING.values()) + list(LIGHTS_SINGLE.values()) + list(POSTPROCS.values()) + list(FOG.values())
 
     venue_data = get_midi_data(venue_item)
 
