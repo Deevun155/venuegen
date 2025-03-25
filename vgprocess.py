@@ -215,8 +215,8 @@ POSTPROCS = {
 }
 
 FOG = {
-        73: "[Fog_Off]",  
-        74: "[Fog_On]"   
+        73: "[FogOff]",  
+        74: "[FogOn]"   
 }
 
 STROBE_VALUES = (4, 8, 16, 32, 104, 108, 116)
