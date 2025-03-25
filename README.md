@@ -4,7 +4,7 @@ This fork is a port of venuegen (created by kueller) to Python 3 and REAPER 7 do
 - Obviously this port needs Python 3 instead of 2.
 - This script complements the [fork of CAT for Python 3](https://github.com/SuperRiderTH/CAT/tree/python3-main) by SuperRiderTH.
 - This version of venuegen **does** close after completing a function, as opposed to the original which does not.
-- This version **ALWAYS** overwrites any notes that were in the CAMERA and/or LIGHTING tracks when pulling from the venue. Please make sure you don't want to keep anything in those tracks before use the pull functions.
+- This version **ALWAYS** overwrites any notes that were in the CAMERA and/or LIGHTING tracks when pulling from the venue. Please make sure you don't want to keep anything in those tracks before using the pull functions.
 - The AUTOSTROBE and RANDOM functions haven't been tested (I never use them), so they may or may not work.
 - Fog events are now able to be created but you need to replace the midi via Nautilus because Magma will say they are unavailable events.
 
