@@ -128,7 +128,8 @@ def pull_lighting_from_venue():
     remove_events(light_data)
     remove_notes(light_data)
 
-    pull_single_instance(venue_data, light_data, single_light_range, single_fog_range )
+    pull_single_instance(venue_data, light_data, single_light_range)
+    pull_single_instance(venue_data, light_data, single_fog_range)
     pull_faded_instance(venue_data, light_data, faded_lights_range)
     pull_faded_instance(venue_data, light_data, faded_procs_range)
 
