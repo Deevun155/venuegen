@@ -3,7 +3,7 @@
 This fork is a port of venuegen (created by kueller) to Python 3 and REAPER 7 done by Deevun155. The code has been tested using 64 bit REAPER 7 and Python 3.10. The original README is below, but there are some things that are no longer the case:
 - Obviously this port needs Python 3 instead of 2.
 - This script complements the [fork of CAT for Python 3](https://github.com/SuperRiderTH/CAT/tree/python3-main) by SuperRiderTH.
-- This version of venuegen **does** close after completing a function, as opposed to the original which does not.
+- This version of venuegen lets you choose if it auto-closes after completing a function, as opposed to the original stays open every time. It defaults to on.
 - This version **ALWAYS** overwrites any notes that were in the CAMERA and/or LIGHTING tracks when pulling from the venue. Please make sure you don't want to keep anything in those tracks before using the pull functions.
 - The AUTOSTROBE and RANDOM functions haven't been tested (I never use them), so they may or may not work.
 - Fog events are now able to be created but you need to replace the midi via Nautilus because Magma will say they are unavailable events.
@@ -29,6 +29,8 @@ Now in your Reaper template or current project create two new tracks called CAME
 Now in the Actions menu (Actions>Show Actions List...) using the **ReaScript: New/Load...** button, add the file **venuegen.py** from the venuegen folder you extracted (**Ex. 2**)
 
 ![Action Menu](https://i.imgur.com/yt5al6S.png)
+
+To keep venuegen open after making a selection like the original venuegen, change `autoclose=1` to `autoclose=0` in **venuegen.ini**. This file is next to **venuegen.py**.
 
 ## Basic Usage
 
