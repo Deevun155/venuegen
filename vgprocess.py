@@ -157,6 +157,7 @@ LIGHTS_SINGLE = {
 }
 
 LIGHTING = {
+        12: "[lighting (intro)]",
         13: "[lighting (bre)]",
         14: "[lighting (flare_fast)]",
         15: "[lighting (flare_slow)]",
