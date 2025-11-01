@@ -368,7 +368,7 @@ def section_generate(MIDIdata, mapping, map_range, event_on_off):
                 to_add.append((note.apos, note.note))
             elif note.status == MIDI_OFF:
                 nxt = notes[i+1]
-                if event_on_off and note.apos != nxt.apos: 
+                if event_on_off and (note.apos < nxt.apos or (note.apos == nxt.apos and nxt.status in (MIDI_ON, MIDI_OFF))): 
                     to_add.append((note.apos, note.note))
                 
     if notes[i] in mapping and notes[i].status == MIDI_ON:
