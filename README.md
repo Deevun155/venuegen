@@ -7,6 +7,8 @@ This fork is a port of venuegen (created by kueller) to Python 3 and REAPER 7 do
 - This version **ALWAYS** overwrites any notes that were in the CAMERA and/or LIGHTING tracks when pulling from the venue. Please make sure you don't want to keep anything in those tracks before using the pull functions.
 - The AUTOSTROBE and RANDOM functions haven't been tested (I never use them), so they may or may not work.
 - Fog events are now able to be created but you need to replace the midi via Nautilus because Magma will say they are unavailable events.
+- The "Generate and Overwrite!" button will do the effects of pressing the Generate, Copy CAMERA to VENUE and Copy LIGHTING to VENUE buttons at once, skipping any overwrite prompts. The first time you run this you will be warned about this operation.
+- This version supports [lighting (into)], found at the bottom of the automatic lighting, next to BONUSFX to keep backward compatability. It behaves like [this](https://youtu.be/-T2UBHeshak). Please update your templates to use the new LIGHTING.txt.
 
 # venuegen
 
