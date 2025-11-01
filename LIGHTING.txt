@@ -61,7 +61,7 @@
 15 Flare_Slow
 14 Flare_Fast
 13 BRE
-12 Intro ----
+12 Intro
 11 BONUSFX
 10 BONUSFX_Opt
 9 ----

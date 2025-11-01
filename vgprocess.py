@@ -424,7 +424,7 @@ def filter_venue_events(VENUEdata, event_filter):
 
     VENUEdata.notes = ven_events_readd
 
-def copy_camera_to_venue():
+def copy_camera_to_venue(force=False):
     cam_item = get_reaper_item("camera")
     if cam_item is None: 
         vg_error("Could not find the \"CAMERA\" track.")
@@ -445,7 +445,7 @@ def copy_camera_to_venue():
             existing_events = True
             break
 
-    if existing_events:
+    if existing_events and not force:
         r = vg_verify("CAMERA events exist in \"VENUE\". Replace with new generated events?")
         if r != YES:
             return
@@ -460,7 +460,7 @@ def copy_camera_to_venue():
 
     write_midi_data(venue_item, venue_data)
 
-def copy_lights_to_venue():
+def copy_lights_to_venue(force=False):
     light_item = get_reaper_item("lighting")
     if light_item is None:
         vg_error("Could not find the \"LIGHTING\" track.")
@@ -481,7 +481,7 @@ def copy_lights_to_venue():
             existing_events = True
             break
 
-    if existing_events:
+    if existing_events and not force:
         r = vg_verify("Light events exist in \"VENUE\". Replace with new generated events?")
         if r != YES:
             return
