@@ -369,7 +369,10 @@ def section_generate(MIDIdata, mapping, map_range, event_on_off):
                 to_add.append((note.apos, note.note))
             elif note.status == MIDI_OFF:
                 nxt = notes[i+1]
-                if event_on_off and (note.apos < nxt.apos or (note.apos == nxt.apos and nxt.status in (MIDI_ON, MIDI_OFF))): 
+                # Generate event if:
+                # 1. There is a time gap (apos != nxt.apos), OR
+                # 2. The next note is NOT part of the current mapping layer (e.g. it's a "Next" command)
+                if event_on_off and (note.apos != nxt.apos or nxt.note not in mapping): 
                     to_add.append((note.apos, note.note))
                 
     if notes[i] in mapping and notes[i].status == MIDI_ON:
