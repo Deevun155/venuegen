@@ -369,7 +369,7 @@ def section_generate(MIDIdata, mapping, map_range, event_on_off):
                 to_add.append((note.apos, note.note))
             elif note.status == MIDI_OFF:
                 nxt = notes[i+1]
-                if event_on_off and (note.apos < nxt.apos or (note.apos == nxt.apos and nxt.status in (MIDI_ON, MIDI_OFF))): 
+                if event_on_off and note.apos != nxt.apos: 
                     to_add.append((note.apos, note.note))
                 
     if notes[i] in mapping and notes[i].status == MIDI_ON:
@@ -405,8 +405,15 @@ def generate_venue():
 
     remove_events(data)
     light_range = dict_merge((LIGHTS_SINGLE, LIGHTING, {8: "strobe"}))
+
+    # Exclude navigation notes from light_range for the main lighting generation
+    # so they don't cause "touching" suppression of event tails.
+    lighting_range = light_range.copy()
+    for n in (30, 31, 32):
+        if n in lighting_range: del lighting_range[n]
+
     section_generate(data, LIGHTS_SINGLE, light_range, False)
-    section_generate(data, LIGHTING, light_range, True)
+    section_generate(data, LIGHTING, lighting_range, True)
     section_generate(data, POSTPROCS, POSTPROCS, True)
     section_generate(data, FOG, FOG, False)
     apply_strobe_notes(data)
